@@ -122,7 +122,7 @@ export default function Logout() {
         console.error("signOut threw:", e);
       } finally {
         clearLocalTokens();
-        navigate("/login", { replace: true });
+        navigate("/auth", { replace: true });
       }
     })();
   }, [navigate]);
