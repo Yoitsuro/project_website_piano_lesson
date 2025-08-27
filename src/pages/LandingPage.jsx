@@ -3,6 +3,7 @@ import TypingText from "../components/TypingText";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate, useLocation } from "react-router-dom";
+import Footer from "../components/Footer";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -32,25 +33,34 @@ export default function LandingPage() {
     }
   }, [location]);
 
-  const handleBook = () => {
-    navigate("/questionnaire");
-  };
+  const handleBook = () => navigate("/questionnaire");
 
   return (
-    <div className="font-sans text-brand-dark">
-      {/* HERO */}
-      <section className="relative min-h-[68vh] flex items-center">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-soft to-white"></div>
+    // Dasar halaman: cream (agar tidak “menabrak” navbar)
+    <div
+      className="text-brand-dark bg-[#F8F6ED]"
+      style={{
+        fontFamily:
+          '"Creato Display", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial',
+      }}
+    >
+      {/* HERO — gradien cream → putih + highlight blush tipis */}
+      <section
+        className="relative min-h-[68vh] flex items-center"
+        style={{
+          background: "linear-gradient(180deg, #F8F6ED 0%, #FFFFFF 100%)",
+        }}
+      >
         <div
-          className="absolute inset-0 -z-10 opacity-30"
+          className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(800px 300px at 20% 10%, rgba(212,175,55,0.25), transparent 60%)",
+              "radial-gradient(800px 300px at 20% 10%, rgba(209,167,153,0.22), transparent 60%)" /* #D1A799 */,
           }}
         />
         <div className="max-w-7xl mx-auto px-4 pt-28 pb-10 grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <h1 className="font-display text-4xl md:text-5xl leading-tight">
+            <h1 className="headline text-4xl md:text-5xl leading-tight text-[#50553C]">
               Les Piano Privat,{" "}
               <TypingText
                 words={["Elegan", "Terstruktur", "Profesional"]}
@@ -97,7 +107,12 @@ export default function LandingPage() {
           <div className="md:justify-self-end w-full">
             <div className="rounded-2xl bg-white/90 backdrop-blur shadow-luxe border border-white/60 p-6">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold">Kelas Piano Private</h3>
+                <h3
+                  className="font-semibold"
+                  style={{ fontFamily: '"Rockdale FREE", serif' }}
+                >
+                  Kelas Piano Private
+                </h3>
                 <span className="text-brand-gold font-semibold">Baru</span>
               </div>
               <p className="text-sm text-slate-600 mt-2">
@@ -125,7 +140,7 @@ export default function LandingPage() {
       {/* FEATURES */}
       <section id="features" className="py-16 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="font-display text-3xl text-center mb-10">
+          <h2 className="headline text-3xl text-center mb-10 text-[#50553C]">
             Kenapa Pilih Kami?
           </h2>
           <div className="grid md:grid-cols-4 gap-6">
@@ -160,14 +175,20 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SCHEDULE (REAL DATA) */}
+      {/* SCHEDULE — gradien putih → blush tipis agar bloknya jelas */}
       <section
         id="schedule"
-        className="py-16 bg-gradient-to-b from-white to-brand-soft/40 scroll-mt-24"
+        className="py-16 scroll-mt-24"
+        style={{
+          background:
+            "linear-gradient(180deg, #FFFFFF 0%, rgba(209,167,153,0.10) 100%)",
+        }}
       >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-end justify-between mb-6">
-            <h2 className="font-display text-3xl">Jadwal Piano Lesson</h2>
+            <h2 className="headline text-3xl text-[#50553C]">
+              Jadwal Piano Lesson
+            </h2>
             <button
               onClick={handleBook}
               className="hidden md:inline-block px-4 py-2 rounded-full border border-brand-gold hover:bg-brand-gold hover:text-white"
@@ -235,7 +256,7 @@ export default function LandingPage() {
       {/* TESTIMONIALS */}
       <section id="testimonials" className="py-16 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="font-display text-3xl text-center mb-10">
+          <h2 className="headline text-3xl text-center mb-10 text-[#50553C]">
             Apa Kata Mereka
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -266,10 +287,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="py-16 bg-brand-soft/40 scroll-mt-24">
+      {/* FAQ — wash olive tipis */}
+      <section
+        id="faq"
+        className="py-16 scroll-mt-24"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(80,85,60,0.06) 0%, rgba(80,85,60,0.03) 100%)",
+        }}
+      >
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="font-display text-3xl text-center mb-10">
+          <h2 className="headline text-3xl text-center mb-10 text-[#50553C]">
             Pertanyaan Umum
           </h2>
           <div className="divide-y rounded-2xl border bg-white">
@@ -301,10 +329,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-14 bg-brand-dark text-white">
+      {/* CTA — charcoal solid dari palette */}
+      <section
+        className="py-14 text-white"
+        style={{ backgroundColor: "#272925" }}
+      >
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h3 className="font-display text-3xl">
+          <h3 className="headline text-3xl text-[#F8F6ED]">
             Siap Mulai Perjalanan Musikmu?
           </h3>
           <p className="mt-2 text-slate-300">
@@ -320,12 +351,7 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="py-8 text-sm bg-white">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div>© {new Date().getFullYear()} GuruNada</div>
-          <div className="text-slate-600">Kontak: 08xx-xxxx-xxxx • Jakarta</div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

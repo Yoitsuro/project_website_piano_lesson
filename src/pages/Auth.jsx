@@ -2,12 +2,18 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthProvider"; // <-- IMPORT HOOK KITA
+import { useAuth } from "../contexts/AuthProvider";
 
+/**
+ * Pastikan baris di public.users ada & sinkron dengan auth.uid()
+ * - Jika belum ada: insert (id, email, name)
+ * - Jika sudah ada tapi id beda (warisan data lama): update id
+ */
 async function ensureUserRow(sb, { id, email }, name) {
   const payload = { id, email };
   if (name && name.trim()) payload.name = name.trim();
 
+  // paksa DB mengembalikan baris yang di-upsert, supaya ketahuan statusnya
   const { data, error, status } = await sb
     .from("users")
     .upsert(payload, { onConflict: "email" })
@@ -24,7 +30,7 @@ async function ensureUserRow(sb, { id, email }, name) {
 export default function Auth() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { session } = useAuth(); // <-- GUNAKAN HOOK DI SINI
+  const { session } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -37,12 +43,12 @@ export default function Auth() {
     }
     return JSON.parse(saved);
   });
-
+  // tambahkan name agar bisa disimpan saat Sign Up
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [notice, setNotice] = useState("");
   const [emailSent, setEmailSent] = useState(false);
 
-  // GANTI DENGAN useEffect BARU YANG LEBIH BAIK:
+  // Jika sudah login, lempar ke beranda
   useEffect(() => {
     // Jika provider bilang ada sesi, langsung arahkan ke beranda
     if (session) {
@@ -76,17 +82,20 @@ export default function Auth() {
     setLoading(true);
 
     try {
+      // SIGN UP - SUPABASE LOGIC
       if (isSignUp) {
+        // SIGN UP + kirim email verifikasi (redirect balik ke /auth?confirmed=1)
         const { data, error } = await supabase.auth.signUp({
           email: form.email,
           password: form.password,
           options: {
-            data: { name: form.name || "" },
+            data: { name: form.name || "" }, // simpan nama ke metadata auth
             emailRedirectTo: `${window.location.origin}/auth/callback`,
           },
         });
         if (error) throw error;
 
+        // ⚠️ Hanya upsert jika user langsung punya session (confirm-email OFF).
         if (data?.session && data?.user) {
           await ensureUserRow(supabase, data.user, form.name);
           navigate("/");
@@ -94,8 +103,9 @@ export default function Auth() {
           setEmailSent(true);
           alert("Akun dibuat! Cek email verifikasi, lalu login.");
         }
-        return;
+        return; // penting: stop di sini
       } else {
+        // LOGIN
         const { error } = await supabase.auth.signInWithPassword({
           email: form.email,
           password: form.password,
@@ -111,8 +121,10 @@ export default function Auth() {
           return;
         }
 
+        // Pastikan token sudah siap sebelum upsert
         await supabase.auth.getSession();
 
+        // Setelah login, pastikan row users tersinkron
         const {
           data: { user },
         } = await supabase.auth.getUser();
@@ -272,6 +284,7 @@ export default function Auth() {
             </button>
           </form>
 
+          {/* Resend hint setelah sign up */}
           {isSignUp && emailSent && (
             <div className="mt-3 text-sm text-slate-600">
               Belum menerima email verifikasi?{" "}

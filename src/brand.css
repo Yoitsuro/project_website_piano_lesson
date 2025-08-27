@@ -1,0 +1,134 @@
+/* ========= 1) FONTS ========= */
+/* Path font dari /public → gunakan path absolut yang diawali slash */
+@font-face {
+  font-family: "Creato Display";
+  src: url("/fonts/creato/CreatoDisplay-Regular.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Creato Display";
+  src: url("/fonts/creato/CreatoDisplay-ExtraBold.otf") format("opentype");
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Creato Display";
+  src: url("/fonts/creato/CreatoDisplay-ThinItalic.otf") format("opentype");
+  font-weight: 100; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Rockdale FREE";
+  src: url("/fonts/rockdale/Rockdale-FREE.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+/* ========= 2) COLOR TOKENS dari palet ========= */
+:root{
+  --cream:    #F8F6ED;  /* base background */
+  --blush:    #D1A799;  /* accent elegan (buttons/links/marks) */
+  --olive:    #50553C;  /* headings & UI dark */
+  --brick:    #683730;  /* accent kedua (hover/cta-strong) */
+  --charcoal: #272925;  /* teks utama kontras tinggi */
+
+  /* casing/utility */
+  --ring: rgba(16,24,40,.08);
+  --shadow-lg: 0 8px 24px rgba(16,24,40,.10);
+  --shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+}
+
+/* ========= 3) BASE ========= */
+html, body {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream) 100%);
+  color: var(--charcoal);
+  font-family: "Creato Display", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Latar global untuk setiap halaman */
+.brand-page {
+  /* lembut + mewah: semburat blush/brick sangat tipis di sudut */
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(209,167,153,.10) 0%, transparent 60%),
+    radial-gradient(1000px 500px at 90% -20%, rgba(104,55,48,.08) 0%, transparent 55%),
+    var(--cream);
+  min-height: 100%;
+}
+
+/* Heading tone elegan */
+h1, h2, h3, .headline {
+  font-family: "Rockdale FREE", serif;
+  color: var(--olive);
+  letter-spacing: .2px;
+}
+
+/* ========= 4) UTILITIES ========= */
+/* warna */
+.text-cream{color:var(--cream)} .bg-cream{background:var(--cream)}
+.text-blush{color:var(--blush)} .bg-blush{background:var(--blush)}
+.text-olive{color:var(--olive)} .bg-olive{background:var(--olive)}
+.text-brick{color:var(--brick)} .bg-brick{background:var(--brick)}
+.text-charcoal{color:var(--charcoal)} .bg-charcoal{background:var(--charcoal)}
+
+/* permukaan/kartu premium */
+.card-luxe,
+.brand-surface{
+  background: #fff;
+  border: 1px solid rgba(232,224,204,.9);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* tombol */
+.btn-brand{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:.75rem 1.25rem; border-radius:9999px;
+  background: var(--blush); color:#fff; font-weight:700;
+  box-shadow: var(--shadow-sm);
+  transition: .2s ease;
+}
+.btn-brand:hover{ filter: saturate(105%); transform: translateY(-1px); background: var(--brick); }
+
+.btn-ghost{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:.625rem 1rem; border-radius:9999px;
+  border:1px solid rgba(39,41,37,.18); color: var(--charcoal); background: transparent;
+  transition: .2s ease;
+}
+.btn-ghost:hover{ border-color: var(--blush); color: var(--olive); }
+
+/* input & select */
+.field{
+  width:100%; border:2px solid rgba(39,41,37,.12); background:#fff;
+  padding:.75rem 1rem; border-radius:12px; box-shadow: var(--shadow-sm);
+}
+.field:focus{ outline: none; border-color: var(--blush); box-shadow: 0 0 0 4px rgba(209,167,153,.25); }
+
+/* ========= 5) Navbar & Footer Skins ========= */
+.brand-nav{
+  backdrop-filter: blur(8px);
+  background: rgba(248,246,237,.82);              /* cream translucent */
+  border-bottom: 1px solid rgba(232,224,204,.9);
+}
+.brand-nav--solid{
+  background: rgba(248,246,237,.95);              /* saat scroll / non-home */
+  box-shadow: var(--shadow-lg);
+}
+
+/* Footer mewah & kontras */
+.brand-footer{
+  background: var(--charcoal);
+  color: var(--cream);
+  border-top: 1px solid rgba(232,224,204,.25);
+}
+.brand-footer a { color: var(--blush); }
+.brand-footer a:hover { color: var(--cream); opacity: .9; }
+
+/* link menu */
+.nav-link{
+  position:relative; padding:.25rem .5rem; font-weight:600;
+  color: var(--charcoal); transition: color .2s ease;
+}
+.nav-link:hover{ color: var(--olive); }
+.nav-link[data-active="true"]::after{
+  content:""; position:absolute; left:0; right:0; bottom:-7px; height:2px;
+  background: linear-gradient(90deg, var(--blush), var(--brick));
+  border-radius: 9999px;
+}
