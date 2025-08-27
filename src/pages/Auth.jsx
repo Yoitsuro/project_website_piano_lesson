@@ -325,6 +325,10 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(() => {
+    const saved = localStorage.getItem("rememberMe");
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   // tambahkan name agar bisa disimpan saat Sign Up
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -374,6 +378,12 @@ export default function Auth() {
       });
     }
   }, [location.search, navigate]);
+
+  // unutk remember me
+  useEffect(() => {
+    // Simpan pilihan pengguna ke localStorage agar bisa dibaca oleh supabaseClient.js
+    localStorage.setItem("rememberMe", rememberMe);
+  }, [rememberMe]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -563,7 +573,8 @@ export default function Auth() {
                   <input
                     type="checkbox"
                     className="rounded border-slate-300"
-                    defaultChecked
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                   />
                   Remember me
                 </label>
